@@ -8,6 +8,7 @@
 #   La taille du bateau n'est pas stockée car elle correspond à la taille de la liste des listes [coordonnées, état]
 #
 
+from model.Coordonnees import type_coordonnees
 from model.Segment import construireSegment, getCoordonneesSegment, type_segment
 from model.Constantes import *
 
@@ -44,7 +45,8 @@ def construireBateau(nomBateau: str) -> dict:
 
 def getNomBateau(bateau: dict) -> str:
     if not type_bateau(bateau):
-        raise ValueError(f"getNomBateau: La valeur {bateau} n'est pas un bateau")
+        raise ValueError(
+            f"getNomBateau: La valeur {bateau} n'est pas un bateau")
     else:
         nomBateau = bateau.get(const.BATEAU_NOM)
     return nomBateau
@@ -52,7 +54,8 @@ def getNomBateau(bateau: dict) -> str:
 
 def getTailleBateau(bateau: dict) -> str:
     if not type_bateau(bateau):
-        raise ValueError(f"getTailleBateau: La valeur {bateau} n'est pas un bateau")
+        raise ValueError(
+            f"getTailleBateau: La valeur {bateau} n'est pas un bateau")
     else:
         tailleBateau = len(bateau.get(const.BATEAU_SEGMENTS))
     return tailleBateau
@@ -60,21 +63,27 @@ def getTailleBateau(bateau: dict) -> str:
 
 def getSegmentsBateau(bateau: dict) -> list:
     if not type_bateau(bateau):
-        raise ValueError(f"getSegmentsBateau: La valeur {bateau} n'est pas un bateau")
+        raise ValueError(
+            f"getSegmentsBateau: La valeur {bateau} n'est pas un bateau")
     else:
         listeSegments = bateau.get(const.BATEAU_SEGMENTS)
     return listeSegments
 
 
 def getSegmentBateau(bateau: dict, n: object) -> dict:
-    segment = 0
-    segments = bateau[const.BATEAU_SEGMENTS]
+    segment = []
+    segments = getSegmentsBateau(bateau)
     if not type_bateau(bateau):
-        raise ValueError(f"getSegmentBateau: La valeur {bateau} n'est pas un bateau")
+        raise ValueError(
+            f"getSegmentBateau: La valeur {bateau} n'est pas un bateau")
     if type(n) == int:
         if not (0 <= n < len(bateau[const.BATEAU_SEGMENTS])):
-            raise ValueError(f"getSegmentBateau: La valeur est en dehors des limites")
+            raise ValueError(
+                f"getSegmentBateau: La valeur est en dehors des limites")
     elif type(n) == tuple:
+        if not type_coordonnees(n):
+            raise ValueError(
+                f"getSegmentBateau : le paramètre {n} ne correspond pas à des coordonnées.")
         trouve = False
         i = 0
         while not trouve and i < len(segments):
@@ -83,24 +92,39 @@ def getSegmentBateau(bateau: dict, n: object) -> dict:
                 segment = segments[i]
             i += 1
         if not trouve:
-            raise ValueError(f"getSegmentBateau: Le paramètre {n} n'est pas de type coordonnées")
+            raise ValueError(f"getSegmentBateau : les coordonnées {n} sont introuvables dans ce bateau")
     else:
         raise ValueError(
             f"getSegmentBateau: Le type du second paramètre {type(n)} ne correspond pas...")
-    return segment
+    return segment if type(n) == tuple else bateau[const.BATEAU_SEGMENTS][n]
 
 
 def setSegmentBateau(bateau: dict, numSeg: int, segmt: dict) -> dict:
     if not type_bateau(bateau):
-        raise ValueError(f"setSegmentBateau: La valeur {bateau} n'est pas un bateau")
+        raise ValueError(
+            f"setSegmentBateau: La valeur {bateau} n'est pas un bateau")
     elif not (0 <= numSeg < len(bateau[const.BATEAU_SEGMENTS])):
-        raise ValueError(f"setSegmentBateau: La valeur est en dehors des limites")
+        raise ValueError(
+            f"setSegmentBateau: La valeur est en dehors des limites")
     elif not type_segment(segmt):
-        raise ValueError(f"setSegmentBateau: La valeur {bateau} n'est pas un bateau")
+        raise ValueError(
+            f"setSegmentBateau: La valeur {bateau} n'est pas un bateau")
     else:
         getSegmentsBateau(bateau)[numSeg] = segmt
     return getSegmentsBateau(bateau)[numSeg]
 
+
+def getCoordonneesBateau(bateau: dict) -> list:
+    lst = []
+    if not type_bateau(bateau):
+        raise ValueError(
+            f"getCoordonneesBateau: La valeur {bateau} n'est pas un bateau")
+    if not type_coordonnees(bateau):
+        raise ValueError(
+            f"getCoordonneesBateau : le paramètre {bateau} ne correspond pas à des coordonnées.")
+    for i in range(len(getSegmentsBateau(bateau))):
+        lst += getCoordonneesSegment(bateau)
+    return lst
 
 def est_horizontal_bateau(bateau: dict) -> bool:
     """
