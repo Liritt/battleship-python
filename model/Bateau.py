@@ -8,9 +8,8 @@
 #   La taille du bateau n'est pas stockée car elle correspond à la taille de la liste des listes [coordonnées, état]
 #
 
-from model.Segment import type_segment
+from model.Segment import construireSegment, getCoordonneesSegment, type_segment
 from model.Constantes import *
-
 
 
 def type_bateau(bateau: dict) -> bool:
@@ -28,3 +27,100 @@ def type_bateau(bateau: dict) -> bool:
         all([type_segment(s) for s in bateau[const.BATEAU_SEGMENTS]])
 
 
+def construireBateau(nomBateau: str) -> dict:
+    if nomBateau not in const.BATEAUX_CASES.keys():
+        raise ValueError(
+            f'construireBateau: Le bateau qui répond au nom de "{nomBateau}" n\'existe pas')
+
+    nbSegments = const.BATEAUX_CASES[nomBateau]
+
+    bateau = {
+        const.BATEAU_NOM: nomBateau,
+        const.BATEAU_SEGMENTS: [construireSegment()
+                                for segment in range(nbSegments)]
+    }
+    return bateau
+
+
+def getNomBateau(bateau: dict) -> str:
+    if not type_bateau(bateau):
+        raise ValueError(f"getNomBateau: La valeur {bateau} n'est pas un bateau")
+    else:
+        nomBateau = bateau.get(const.BATEAU_NOM)
+    return nomBateau
+
+
+def getTailleBateau(bateau: dict) -> str:
+    if not type_bateau(bateau):
+        raise ValueError(f"getTailleBateau: La valeur {bateau} n'est pas un bateau")
+    else:
+        tailleBateau = len(bateau.get(const.BATEAU_SEGMENTS))
+    return tailleBateau
+
+
+def getSegmentsBateau(bateau: dict) -> list:
+    if not type_bateau(bateau):
+        raise ValueError(f"getSegmentsBateau: La valeur {bateau} n'est pas un bateau")
+    else:
+        listeSegments = bateau.get(const.BATEAU_SEGMENTS)
+    return listeSegments
+
+
+def getSegmentBateau(bateau: dict, n: object) -> dict:
+    segment = 0
+    segments = bateau[const.BATEAU_SEGMENTS]
+    if not type_bateau(bateau):
+        raise ValueError(f"getSegmentBateau: La valeur {bateau} n'est pas un bateau")
+    if type(n) == int:
+        if not (0 <= n < len(bateau[const.BATEAU_SEGMENTS])):
+            raise ValueError(f"getSegmentBateau: La valeur est en dehors des limites")
+    elif type(n) == tuple:
+        trouve = False
+        i = 0
+        while not trouve and i < len(segments):
+            if getCoordonneesSegment(segments[i]) == n:
+                trouve = True
+                segment = segments[i]
+            i += 1
+        if not trouve:
+            raise ValueError(f"getSegmentBateau: Le paramètre {n} n'est pas de type coordonnées")
+    else:
+        raise ValueError(
+            f"getSegmentBateau: Le type du second paramètre {type(n)} ne correspond pas...")
+    return segment
+
+
+def setSegmentBateau(bateau: dict, numSeg: int, segmt: dict) -> dict:
+    if not type_bateau(bateau):
+        raise ValueError(f"setSegmentBateau: La valeur {bateau} n'est pas un bateau")
+    elif not (0 <= numSeg < len(bateau[const.BATEAU_SEGMENTS])):
+        raise ValueError(f"setSegmentBateau: La valeur est en dehors des limites")
+    elif not type_segment(segmt):
+        raise ValueError(f"setSegmentBateau: La valeur {bateau} n'est pas un bateau")
+    else:
+        getSegmentsBateau(bateau)[numSeg] = segmt
+    return getSegmentsBateau(bateau)[numSeg]
+
+
+def est_horizontal_bateau(bateau: dict) -> bool:
+    """
+    Retourne True si le bateau est horizontal, False si il est vertical.
+
+    :param bateau:
+    :return: True si le bateau est horizontal, False si il est vertical
+    :raise ValueError si le bateau n'est pas placé ou s'il n'est ni vertical, ni horizontal
+    """
+    if not estPlaceBateau(bateau):
+        raise ValueError(
+            "est_horizontal_bateau: Le bateau n'est pas positionné")
+    pos = getCoordonneesBateau(bateau)
+    res = True
+    if len(pos) > 1:
+        # Horizontal : le numéro de ligne ne change pas
+        res = pos[0][0] == pos[1][0]
+        # On vérifie que le bateau est toujours horizontal
+        for i in range(1, len(pos)):
+            if (res and pos[0][0] != pos[i][0]) or (not res and pos[0][1] != pos[i][1]):
+                raise ValueError(
+                    "est_horizontal_bateau: Le bateau n'est ni horizontal, ni vertical ??")
+    return res
