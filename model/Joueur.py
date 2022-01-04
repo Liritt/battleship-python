@@ -64,3 +64,19 @@ def getBateauxJoueur(joueur: dict) -> list:
     else:
         lstBateauxJoueur = joueur.get(const.JOUEUR_LISTE_BATEAUX)
     return lstBateauxJoueur
+
+
+def getGrilleTirsJoueur(joueur: dict) -> list:
+    if not type_joueur(joueur):
+        raise ValueError(f"getGrilleTirsJoueur: {joueur} n'est pas un joueur")
+    else:
+        grille = joueur.get(const.JOUEUR_GRILLE_TIRS)
+    return grille
+
+
+def getGrilleTirsAdversaire(joueur: dict) -> list:
+    if not type_joueur(joueur):
+        raise ValueError(f"getGrilleTirsAdversaire: {joueur} n'est pas un joueur")
+    else:
+        grille = joueur.get(const.JOUEUR_GRILLE_ADVERSAIRE)
+    return grille
