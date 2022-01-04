@@ -33,4 +33,11 @@ def type_grille(g: list) -> bool:
     return res
 
 
+def construireGrille() -> list:
+    lst = []
+    for y in range(10):
+            lst.append([None]*10)
+    return lst
+
+
 
