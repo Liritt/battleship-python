@@ -119,12 +119,10 @@ def getCoordonneesBateau(bateau: dict) -> list:
     if not type_bateau(bateau):
         raise ValueError(
             f"getCoordonneesBateau: La valeur {bateau} n'est pas un bateau")
-    if not type_coordonnees(bateau):
-        raise ValueError(
-            f"getCoordonneesBateau : le paramètre {bateau} ne correspond pas à des coordonnées.")
-    for i in range(len(getSegmentsBateau(bateau))):
-        lst += getCoordonneesSegment(bateau)
+    for i in range(getTailleBateau(bateau)):
+        lst.append(getCoordonneesSegment(bateau[const.BATEAU_SEGMENTS][i]))
     return lst
+
 
 def est_horizontal_bateau(bateau: dict) -> bool:
     """
