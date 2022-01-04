@@ -28,6 +28,30 @@ def type_bateau(bateau: dict) -> bool:
         all([type_segment(s) for s in bateau[const.BATEAU_SEGMENTS]])
 
 
+def est_horizontal_bateau(bateau: dict) -> bool:
+    """
+    Retourne True si le bateau est horizontal, False si il est vertical.
+
+    :param bateau:
+    :return: True si le bateau est horizontal, False si il est vertical
+    :raise ValueError si le bateau n'est pas placé ou s'il n'est ni vertical, ni horizontal
+    """
+    if not estPlaceBateau(bateau):
+        raise ValueError(
+            "est_horizontal_bateau: Le bateau n'est pas positionné")
+    pos = getCoordonneesBateau(bateau)
+    res = True
+    if len(pos) > 1:
+        # Horizontal : le numéro de ligne ne change pas
+        res = pos[0][0] == pos[1][0]
+        # On vérifie que le bateau est toujours horizontal
+        for i in range(1, len(pos)):
+            if (res and pos[0][0] != pos[i][0]) or (not res and pos[0][1] != pos[i][1]):
+                raise ValueError(
+                    "est_horizontal_bateau: Le bateau n'est ni horizontal, ni vertical ??")
+    return res
+
+
 def construireBateau(nomBateau: str) -> dict:
     if nomBateau not in const.BATEAUX_CASES.keys():
         raise ValueError(
@@ -120,30 +144,6 @@ def getCoordonneesBateau(bateau: dict) -> list:
     return lst
 
 
-def est_horizontal_bateau(bateau: dict) -> bool:
-    """
-    Retourne True si le bateau est horizontal, False si il est vertical.
-
-    :param bateau:
-    :return: True si le bateau est horizontal, False si il est vertical
-    :raise ValueError si le bateau n'est pas placé ou s'il n'est ni vertical, ni horizontal
-    """
-    if not estPlaceBateau(bateau):
-        raise ValueError(
-            "est_horizontal_bateau: Le bateau n'est pas positionné")
-    pos = getCoordonneesBateau(bateau)
-    res = True
-    if len(pos) > 1:
-        # Horizontal : le numéro de ligne ne change pas
-        res = pos[0][0] == pos[1][0]
-        # On vérifie que le bateau est toujours horizontal
-        for i in range(1, len(pos)):
-            if (res and pos[0][0] != pos[i][0]) or (not res and pos[0][1] != pos[i][1]):
-                raise ValueError(
-                    "est_horizontal_bateau: Le bateau n'est ni horizontal, ni vertical ??")
-    return res
-
-
 def peutPlacerBateau(bateau: dict, first_case: tuple, placement: bool) -> bool:
     if not type_bateau(bateau):
         raise ValueError(
@@ -160,6 +160,20 @@ def peutPlacerBateau(bateau: dict, first_case: tuple, placement: bool) -> bool:
         # verticale
         finBateau = (y + tailleBateau, x)
     return type_coordonnees(finBateau)
+
+def estPlaceBateau(bateau: dict) -> bool:
+    if not type_bateau(bateau):
+        raise ValueError(
+            f"estPlaceBateau: La valeur {bateau} n'est pas un bateau")
+    positionne = True
+    i = 0
+    while positionne and i < len(bateau.get(const.BATEAU_SEGMENTS)):
+        if getCoordonneesBateau(bateau)[i] == None:
+            positionne = False
+        i += 1
+    return positionne
+
+
 
 
 
