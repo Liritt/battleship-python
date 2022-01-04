@@ -146,3 +146,23 @@ def est_horizontal_bateau(bateau: dict) -> bool:
                 raise ValueError(
                     "est_horizontal_bateau: Le bateau n'est ni horizontal, ni vertical ??")
     return res
+
+
+def peutPlacerBateau(bateau: dict, first_case: tuple, placement: bool) -> bool:
+    if not type_bateau(bateau):
+        raise ValueError(
+            f"peutPlacerBateau: La valeur {bateau} n'est pas un bateau")
+    elif not type_coordonnees(first_case) or first_case is None:
+        raise ValueError(
+            f"peutPlacerBateau : le paramètre {first_case} ne correspond pas à des coordonnées.")
+    else:
+        tailleBateau = getTailleBateau(bateau) - 1
+        y, x = first_case
+        if placement:
+            # horizontale
+            finBateau = (y, x + tailleBateau)
+        else:
+            # verticale
+            finBateau = (y + tailleBateau, x)
+    return type_coordonnees(finBateau)
+
