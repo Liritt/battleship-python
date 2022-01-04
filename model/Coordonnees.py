@@ -22,3 +22,25 @@ def type_coordonnees(c: tuple) -> bool:
     return c is None or (type(c) == tuple and len(c) == 2 and 0 <= c[0] < const.DIM and 0 <= c[1] < const.DIM)
 
 
+def sontVoisins(coord1: tuple, coord2: tuple) -> bool:
+    voisins = False
+    if coord1 == None or not type_coordonnees(coord1):
+        raise ValueError(f'sontVoisins : le paramètre {coord1} n’est pas de type coordonnées')
+    if coord2 == None or not type_coordonnees(coord2):
+        raise ValueError(f'sontVoisins : le paramètre {coord2} n’est pas de type coordonnées')
+    y, x = coord1
+    lst = []
+    lst.append((y - 1, x))
+    lst.append((y, x - 1))
+    lst.append((y - 1, x - 1))
+    lst.append((y + 1, x - 1))
+    lst.append((y - 1, x + 1))
+    lst.append((y + 1, x))
+    lst.append((y, x + 1))
+    lst.append((y + 1, x + 1))
+    return coord2 in lst
+
+
+
+
+
