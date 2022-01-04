@@ -42,4 +42,11 @@ def construireJoueur(nomJoueur: str, nomsBateaux: list) -> dict:
     return joueur
 
 
+def getNomJoueur(joueur: dict) -> str:
+    if not type_joueur(joueur):
+        raise ValueError(f"getNomJoueur: {joueur} n'est pas un joueur")
+    else:
+        nomJoueur = joueur.get(const.JOUEUR_NOM)
+    return nomJoueur
+
 
