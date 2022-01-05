@@ -87,7 +87,7 @@ def placerBateauJoueur(joueur: dict, bateau: dict, first_case: tuple, horizontal
     if not type_joueur(joueur):
         raise ValueError(f"placerBateauJoueur: {joueur} n'est pas un joueur")
     elif not type_bateau(bateau):
-        raise ValueError(f"placerBateauJoueur: les valeurs {bateau} ne corresepondent pas à un bateau")
+        raise ValueError(f"placerBateauJoueur: les valeurs {bateau} ne correspondent pas à un bateau")
     elif not type_coordonnees(first_case) or first_case is None:
         raise ValueError(f"placerBateauJoueur: les valeurs {first_case} ne correspondent pas à des coordonnées")
     elif bateau not in getBateauxJoueur(joueur):

@@ -9,7 +9,7 @@
 #
 
 from model.Coordonnees import type_coordonnees, sontVoisins
-from model.Segment import construireSegment, getCoordonneesSegment, type_segment, setCoordonneesSegment, getEtatSegment
+from model.Segment import construireSegment, getCoordonneesSegment, setEtatSegment, type_segment, setCoordonneesSegment, getEtatSegment
 from model.Constantes import *
 
 
@@ -217,9 +217,9 @@ def reinitialiserBateau(bateau: dict) -> None:
     if not type_bateau(bateau):
         raise ValueError(
             f"reinitialiserBateau: La valeur {bateau} n'est pas un bateau")
-    for i in range(getTailleBateau(bateau)):
-        bateau[const.BATEAU_SEGMENTS][i][const.SEGMENT_COORDONNEES] = None
-        bateau[const.BATEAU_SEGMENTS][i][const.SEGMENT_ETAT] = const.INTACT
+    for segment in getSegmentsBateau(bateau):
+        setCoordonneesSegment(segment, None)
+        setEtatSegment(segment, const.INTACT)
 
 
 
