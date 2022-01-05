@@ -35,8 +35,8 @@ def type_grille(g: list) -> bool:
 
 def construireGrille() -> list:
     lst = []
-    for y in range(10):
-            lst.append([None]*10)
+    for y in range(const.DIM):
+            lst.append([None]*const.DIM)
     return lst
 
 

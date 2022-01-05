@@ -9,7 +9,7 @@
 #
 
 from model.Coordonnees import type_coordonnees, sontVoisins
-from model.Segment import construireSegment, getCoordonneesSegment, type_segment
+from model.Segment import construireSegment, getCoordonneesSegment, type_segment, setCoordonneesSegment
 from model.Constantes import *
 
 
@@ -177,10 +177,10 @@ def estPlaceBateau(bateau: dict) -> bool:
 def sontVoisinsBateau(bateau1: dict, bateau2: dict) -> bool:
     if not type_bateau(bateau1):
         raise ValueError(
-            f"peutPlacerBateau: La valeur {bateau1} n'est pas un bateau")
+            f"sontVoisinsBateau: La valeur {bateau1} n'est pas un bateau")
     if not type_bateau(bateau2):
         raise ValueError(
-            f"peutPlacerBateau: La valeur {bateau2} n'est pas un bateau")
+            f"sontVoisinsBateau: La valeur {bateau2} n'est pas un bateau")
     a = getSegmentsBateau(bateau1)
     b = getSegmentsBateau(bateau2)
     res = False
@@ -193,6 +193,27 @@ def sontVoisinsBateau(bateau1: dict, bateau2: dict) -> bool:
             j += 1
         i += 1
     return res
+
+
+def placerBateau(bateau: dict, first_case: tuple, horizontal: bool) -> None:
+    if not type_bateau(bateau):
+        raise ValueError(
+            f"placerBateau: La valeur {bateau} n'est pas un bateau")
+    elif not type_coordonnees(first_case) or first_case is None:
+        raise ValueError(
+            f"placerBateau: le paramètre {first_case} ne correspond pas à des coordonnées.")
+    taille = getTailleBateau(bateau)
+    for i in range(taille):
+        segment = getSegmentBateau(bateau, i)
+        if horizontal:
+            setCoordonneesSegment(segment, (first_case[0], first_case[1] + i))
+        else:
+            setCoordonneesSegment(segment, (first_case[0] + i, first_case[1]))
+    if not peutPlacerBateau(bateau, first_case, horizontal):
+        raise RuntimeError(f"placerBateau: Le bateau dépasse de la grille")
+
+
+
 
 
 
