@@ -1,7 +1,7 @@
 # Joueur.py
 
 from model.Coordonnees import type_coordonnees
-from model.Bateau import type_bateau, construireBateau, placerBateau, peutPlacerBateau, sontVoisinsBateau, estPlaceBateau, getCoordonneesBateau, getNomBateau, reinitialiserBateau
+from model.Bateau import *
 from model.Grille import type_grille, construireGrille
 from model.Constantes import *
 
