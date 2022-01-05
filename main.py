@@ -5,7 +5,7 @@
 
 import pygame
 
-from model.Manuel import placerBateauxManuel
+from model.Manuel import placerBateauxManuel, choisirCaseTirManuel
 from model.Constantes import *
 from model.Joueur import construireJoueur
 from view import window
@@ -16,6 +16,7 @@ def main_test():
  placerBateauxManuel(j)
  window.set_action("Pour terminer, cliquez dans la grille de DROITE")
  window.get_clicked_cell(2)
+ choisirCaseTirManuel(j)
 
 if __name__ == '__main__' :
  main_test()
