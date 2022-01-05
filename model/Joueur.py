@@ -1,7 +1,7 @@
 # Joueur.py
 
 from model.Coordonnees import type_coordonnees
-from model.Bateau import type_bateau, construireBateau, placerBateau, peutPlacerBateau, sontVoisinsBateau, estPlaceBateau, getCoordonneesBateau, getNomBateau
+from model.Bateau import type_bateau, construireBateau, placerBateau, peutPlacerBateau, sontVoisinsBateau, estPlaceBateau, getCoordonneesBateau, getNomBateau, reinitialiserBateau
 from model.Grille import type_grille, construireGrille
 from model.Constantes import *
 
@@ -112,3 +112,11 @@ def placerBateauJoueur(joueur: dict, bateau: dict, first_case: tuple, horizontal
         if res:
             placerBateau(bateau, first_case, horizontal)
     return res
+
+
+def reinitialiserBateauxJoueur(joueur: dict) -> None:
+    if not type_joueur(joueur):
+        raise ValueError(f"reinitialiserBateauxJoueur: {joueur} n'est pas un joueur")
+    a = getBateauxJoueur(joueur)
+    for i in range(getNombreBateauxJoueur(joueur)):
+        reinitialiserBateau(getBateauxJoueur(joueur)[i])
