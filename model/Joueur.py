@@ -1,6 +1,7 @@
 # Joueur.py
 
-from model.Bateau import type_bateau, construireBateau
+from model.Coordonnees import type_coordonnees
+from model.Bateau import type_bateau, construireBateau, placerBateau, peutPlacerBateau, sontVoisinsBateau, estPlaceBateau, getCoordonneesBateau, getNomBateau
 from model.Grille import type_grille, construireGrille
 from model.Constantes import *
 
@@ -80,3 +81,34 @@ def getGrilleTirsAdversaire(joueur: dict) -> list:
     else:
         grille = joueur.get(const.JOUEUR_GRILLE_ADVERSAIRE)
     return grille
+
+
+def placerBateauJoueur(joueur: dict, bateau: dict, first_case: tuple, horizontal: bool) -> bool:
+    if not type_joueur(joueur):
+        raise ValueError(f"placerBateauJoueur: {joueur} n'est pas un joueur")
+    elif not type_bateau(bateau):
+        raise ValueError(f"placerBateauJoueur: les valeurs {bateau} ne corresepondent pas à un bateau")
+    elif not type_coordonnees(first_case) or first_case is None:
+        raise ValueError(f"placerBateauJoueur: les valeurs {first_case} ne correspondent pas à des coordonnées")
+    elif bateau not in getBateauxJoueur(joueur):
+        raise RuntimeError("placerBateauJoueur: le bateau n'existe pas")
+
+    res = True
+
+    liste = getCoordonneesBateau(bateau)
+    for j in liste:
+        if j is None:
+            res = False
+
+    newBateau = construireBateau(getNomBateau(bateau))
+
+    if peutPlacerBateau(newBateau, first_case, horizontal):
+        placerBateau(newBateau, first_case, horizontal)
+        bateaux_places = [bateau for bateau in getBateauxJoueur(joueur) if estPlaceBateau(bateau)]
+        res = True
+        for a in bateaux_places:
+            if sontVoisinsBateau(newBateau, a):
+                res = False
+        if res:
+            placerBateau(bateau, first_case, horizontal)
+    return res

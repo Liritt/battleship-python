@@ -219,3 +219,6 @@ def placerBateau(bateau: dict, first_case: tuple, horizontal: bool) -> None:
 
 
 
+
+
+

@@ -24,9 +24,9 @@ def type_coordonnees(c: tuple) -> bool:
 
 def sontVoisins(coord1: tuple, coord2: tuple) -> bool:
     voisins = False
-    if coord1 == None or not type_coordonnees(coord1):
+    if coord1 is None or not type_coordonnees(coord1):
         raise ValueError(f'sontVoisins : le paramètre {coord1} n’est pas de type coordonnées')
-    if coord2 == None or not type_coordonnees(coord2):
+    if coord2 is None or not type_coordonnees(coord2):
         raise ValueError(f'sontVoisins : le paramètre {coord2} n’est pas de type coordonnées')
     y, x = coord1
     lst = []
