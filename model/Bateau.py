@@ -223,7 +223,20 @@ def reinitialiserBateau(bateau: dict) -> None:
 
 
 
-
+def contientSegmentBateau(bateau: dict, coord_cas: tuple) -> bool:
+    if not type_bateau(bateau):
+        raise ValueError(
+            f"contientSegmentBateau: La valeur {bateau} n'est pas un bateau")
+    if not type_coordonnees(coord_cas):
+        raise ValueError(f"placerBateauJoueur: les valeurs {coord_cas} ne correspondent pas à des coordonnées")
+    res = False
+    liste_cos_segments = []
+    segments = getSegmentsBateau(bateau)
+    for i in range(getTailleBateau(bateau)):
+        liste_cos_segments.append(getCoordonneesSegment(segments[i]))
+    if coord_cas in liste_cos_segments:
+        res = True
+    return res
 
 
 

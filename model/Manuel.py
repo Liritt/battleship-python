@@ -12,13 +12,13 @@ def placerBateauxManuel(joueur: dict) -> None:
     window.placer_bateaux()
 
 
-def choisirCaseTirManuel(joueur: dict):
+def choisirCaseTirManuel(joueur: dict) -> tuple:
     if not type_joueur(joueur):
         raise ValueError(f"reinitialiserBateauxJoueur: {joueur} n'est pas un joueur")
     window.afficher(joueur)
     window.display_message(f"{getNomJoueur(joueur)} : choisissez la case où vous voulez tirer")
     window.set_action("Choisissez la case de tir")
-    print(window.get_clicked_cell(2)[0])
+    return print(window.get_clicked_cell(2)[0])
 
 
 
