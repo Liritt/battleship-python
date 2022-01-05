@@ -9,7 +9,7 @@
 #
 
 from model.Coordonnees import type_coordonnees, sontVoisins
-from model.Segment import construireSegment, getCoordonneesSegment, type_segment, setCoordonneesSegment
+from model.Segment import construireSegment, getCoordonneesSegment, type_segment, setCoordonneesSegment, getEtatSegment
 from model.Constantes import *
 
 
@@ -211,6 +211,17 @@ def placerBateau(bateau: dict, first_case: tuple, horizontal: bool) -> None:
             setCoordonneesSegment(segment, (first_case[0] + i, first_case[1]))
     if not peutPlacerBateau(bateau, first_case, horizontal):
         raise RuntimeError(f"placerBateau: Le bateau dépasse de la grille")
+
+
+def reinitialiserBateau(bateau: dict) -> None:
+    if not type_bateau(bateau):
+        raise ValueError(
+            f"reinitialiserBateau: La valeur {bateau} n'est pas un bateau")
+    for i in range(getTailleBateau(bateau)):
+        bateau[const.BATEAU_SEGMENTS][i][const.SEGMENT_COORDONNEES] = None
+        bateau[const.BATEAU_SEGMENTS][i][const.SEGMENT_ETAT] = const.INTACT
+
+
 
 
 
