@@ -8,7 +8,7 @@
 #   La taille du bateau n'est pas stockée car elle correspond à la taille de la liste des listes [coordonnées, état]
 #
 
-from model.Coordonnees import type_coordonnees
+from model.Coordonnees import type_coordonnees, sontVoisins
 from model.Segment import construireSegment, getCoordonneesSegment, type_segment
 from model.Constantes import *
 
@@ -173,6 +173,26 @@ def estPlaceBateau(bateau: dict) -> bool:
         i += 1
     return positionne
 
+
+def sontVoisinsBateau(bateau1: dict, bateau2: dict) -> bool:
+    if not type_bateau(bateau1):
+        raise ValueError(
+            f"peutPlacerBateau: La valeur {bateau1} n'est pas un bateau")
+    if not type_bateau(bateau2):
+        raise ValueError(
+            f"peutPlacerBateau: La valeur {bateau2} n'est pas un bateau")
+    a = getSegmentsBateau(bateau1)
+    b = getSegmentsBateau(bateau2)
+    res = False
+    i = 0
+    while i < len(a) and not res:
+        j = 0
+        while j < len(b) and not res:
+            if sontVoisins(getCoordonneesSegment(a[i]), getCoordonneesSegment(b[j])):
+                res = True
+            j += 1
+        i += 1
+    return res
 
 
 
