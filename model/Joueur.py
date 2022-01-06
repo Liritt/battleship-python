@@ -24,7 +24,7 @@ def type_joueur(joueur: dict) -> bool:
     :return: <code>True</code> si le dictionnaire représente un joueur, <code>False</code> sinon.
     """
     return type(joueur) == dict and len(joueur) >= 4 and \
-        len([p for p in [ const.JOUEUR_NOM, const.JOUEUR_LISTE_BATEAUX, const.JOUEUR_GRILLE_TIRS] if p not in joueur]) == 0 and \
+        len([p for p in [const.JOUEUR_NOM, const.JOUEUR_LISTE_BATEAUX, const.JOUEUR_GRILLE_TIRS] if p not in joueur]) == 0 and \
         type(joueur[const.JOUEUR_NOM]) == str and type(joueur[const.JOUEUR_LISTE_BATEAUX]) == list \
         and type_grille(joueur[const.JOUEUR_GRILLE_TIRS]) \
         and all(type_bateau(v) for v in joueur[const.JOUEUR_LISTE_BATEAUX])
@@ -53,7 +53,8 @@ def getNomJoueur(joueur: dict) -> str:
 
 def getNombreBateauxJoueur(joueur: dict) -> int:
     if not type_joueur(joueur):
-        raise ValueError(f"getNombreBateauxJoueur: {joueur} n'est pas un joueur")
+        raise ValueError(
+            f"getNombreBateauxJoueur: {joueur} n'est pas un joueur")
     else:
         nbBateauxJoueur = len(joueur.get(const.JOUEUR_LISTE_BATEAUX))
     return nbBateauxJoueur
@@ -77,7 +78,8 @@ def getGrilleTirsJoueur(joueur: dict) -> list:
 
 def getGrilleTirsAdversaire(joueur: dict) -> list:
     if not type_joueur(joueur):
-        raise ValueError(f"getGrilleTirsAdversaire: {joueur} n'est pas un joueur")
+        raise ValueError(
+            f"getGrilleTirsAdversaire: {joueur} n'est pas un joueur")
     else:
         grille = joueur.get(const.JOUEUR_GRILLE_ADVERSAIRE)
     return grille
@@ -87,9 +89,11 @@ def placerBateauJoueur(joueur: dict, bateau: dict, first_case: tuple, horizontal
     if not type_joueur(joueur):
         raise ValueError(f"placerBateauJoueur: {joueur} n'est pas un joueur")
     elif not type_bateau(bateau):
-        raise ValueError(f"placerBateauJoueur: les valeurs {bateau} ne correspondent pas à un bateau")
+        raise ValueError(
+            f"placerBateauJoueur: les valeurs {bateau} ne correspondent pas à un bateau")
     elif not type_coordonnees(first_case) or first_case is None:
-        raise ValueError(f"placerBateauJoueur: les valeurs {first_case} ne correspondent pas à des coordonnées")
+        raise ValueError(
+            f"placerBateauJoueur: les valeurs {first_case} ne correspondent pas à des coordonnées")
     elif bateau not in getBateauxJoueur(joueur):
         raise RuntimeError("placerBateauJoueur: le bateau n'existe pas")
 
@@ -104,7 +108,8 @@ def placerBateauJoueur(joueur: dict, bateau: dict, first_case: tuple, horizontal
 
     if peutPlacerBateau(newBateau, first_case, horizontal):
         placerBateau(newBateau, first_case, horizontal)
-        bateaux_places = [bateau for bateau in getBateauxJoueur(joueur) if estPlaceBateau(bateau)]
+        bateaux_places = [bateau for bateau in getBateauxJoueur(
+            joueur) if estPlaceBateau(bateau)]
         res = True
         for a in bateaux_places:
             if sontVoisinsBateau(newBateau, a):
@@ -116,7 +121,35 @@ def placerBateauJoueur(joueur: dict, bateau: dict, first_case: tuple, horizontal
 
 def reinitialiserBateauxJoueur(joueur: dict) -> None:
     if not type_joueur(joueur):
-        raise ValueError(f"reinitialiserBateauxJoueur: {joueur} n'est pas un joueur")
+        raise ValueError(
+            f"reinitialiserBateauxJoueur: {joueur} n'est pas un joueur")
     a = getBateauxJoueur(joueur)
     for i in range(getNombreBateauxJoueur(joueur)):
         reinitialiserBateau(getBateauxJoueur(joueur)[i])
+
+
+def repondreTirJoueur(joueur: dict, coord: tuple) -> str:
+    if not type_joueur(joueur):
+        raise ValueError(f"repondreTirJoueur: {joueur} n'est pas un joueur")
+    if not type_coordonnees(coord):
+        raise ValueError(
+            f"setEtatSegmentBateau: les valeurs {coord} ne correspondent pas à des coordonnées")
+    resTir = const.RATE
+    bateau = getBateauxJoueur(joueur)
+    for i in range(getNombreBateauxJoueur(joueur)):
+        bateau.append(getBateauxJoueur(joueur)[i])
+        if contientSegmentBateau(bateau[i], coord):
+            resTir = const.TOUCHE
+            setEtatSegmentBateau(bateau[i], coord, resTir)
+            getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.TOUCHE
+            if estCouleBateau(bateau[i]):
+                resTir = const.COULE
+                getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.COULE
+    if resTir == const.RATE:
+        getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.RATE
+    return resTir
+
+    
+    
+
+

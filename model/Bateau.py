@@ -113,7 +113,8 @@ def getSegmentBateau(bateau: dict, n: object) -> dict:
                 segment = segments[i]
             i += 1
         if not trouve:
-            raise ValueError(f"getSegmentBateau : les coordonnées {n} sont introuvables dans ce bateau")
+            raise ValueError(
+                f"getSegmentBateau : les coordonnées {n} sont introuvables dans ce bateau")
     else:
         raise ValueError(
             f"getSegmentBateau: Le type du second paramètre {type(n)} ne correspond pas...")
@@ -160,6 +161,7 @@ def peutPlacerBateau(bateau: dict, first_case: tuple, placement: bool) -> bool:
         # verticale
         finBateau = (y + tailleBateau, x)
     return type_coordonnees(finBateau)
+
 
 def estPlaceBateau(bateau: dict) -> bool:
     if not type_bateau(bateau):
@@ -227,7 +229,8 @@ def contientSegmentBateau(bateau: dict, coord_cas: tuple) -> bool:
         raise ValueError(
             f"contientSegmentBateau: La valeur {bateau} n'est pas un bateau")
     if not type_coordonnees(coord_cas):
-        raise ValueError(f"contientSegmentBateau: les valeurs {coord_cas} ne correspondent pas à des coordonnées")
+        raise ValueError(
+            f"contientSegmentBateau: les valeurs {coord_cas} ne correspondent pas à des coordonnées")
     res = False
     liste_cos_segments = []
     segments = getSegmentsBateau(bateau)
@@ -243,9 +246,11 @@ def setEtatSegmentBateau(bateau: dict, coordonnees: tuple, etat: str) -> None:
         raise ValueError(
             f"setEtatSegmentBateau: La valeur {bateau} n'est pas un bateau")
     if not type_coordonnees(coordonnees):
-        raise ValueError(f"setEtatSegmentBateau: les valeurs {coordonnees} ne correspondent pas à des coordonnées")
+        raise ValueError(
+            f"setEtatSegmentBateau: les valeurs {coordonnees} ne correspondent pas à des coordonnées")
     if not type_etat_segment(etat):
-        raise ValueError(f"setEtatSegmentBateau: la valeur {etat} n'est pas un état")
+        raise ValueError(
+            f"setEtatSegmentBateau: la valeur {etat} n'est pas un état")
     setEtatSegment(getSegmentBateau(bateau, coordonnees), etat)
 
 
@@ -258,8 +263,3 @@ def estCouleBateau(bateau: dict) -> bool:
         if getEtatSegment(segment) == const.INTACT:
             res = False
     return res
-
-
-
-
-

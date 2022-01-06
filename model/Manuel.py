@@ -18,7 +18,7 @@ def choisirCaseTirManuel(joueur: dict) -> tuple:
     window.afficher(joueur)
     window.display_message(f"{getNomJoueur(joueur)} : choisissez la case où vous voulez tirer")
     window.set_action("Choisissez la case de tir")
-    return print(window.get_clicked_cell(2)[0])
+    return window.get_clicked_cell(2)[0]
 
 
 

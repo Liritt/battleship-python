@@ -7,16 +7,20 @@ import pygame
 
 from model.Manuel import placerBateauxManuel, choisirCaseTirManuel
 from model.Constantes import *
-from model.Joueur import construireJoueur
+from model.Joueur import construireJoueur, repondreTirJoueur
 from view import window
 
 def main_test():
  j = construireJoueur("Galérien", [const.PORTE_AVION, const.CUIRASSE,
  const.CROISEUR, const.TORPILLEUR])
  placerBateauxManuel(j)
+ for i in range(4):
+    case_choisit = choisirCaseTirManuel(j)
+    print(case_choisit)
+    resultat_tir = repondreTirJoueur(j,  case_choisit)
+    window.refresh()
  window.set_action("Pour terminer, cliquez dans la grille de DROITE")
  window.get_clicked_cell(2)
- choisirCaseTirManuel(j)
 
 if __name__ == '__main__' :
  main_test()
