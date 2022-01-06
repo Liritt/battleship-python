@@ -2,6 +2,8 @@
 
 from model.Constantes import *
 from model.Case import type_case
+from model.Joueur import setEtatSegmentBateau
+from model.Coordonnees import type_coordonnees
 
 #
 # - Définition de la grille des tirs
@@ -36,8 +38,28 @@ def type_grille(g: list) -> bool:
 def construireGrille() -> list:
     lst = []
     for y in range(const.DIM):
-            lst.append([None]*const.DIM)
+        lst.append([None]*const.DIM)
     return lst
 
 
+def marquerCouleGrille(grille: list, coord: tuple) -> None:
+    if not type_grille(grille):
+        raise ValueError(
+            f"marquerCouleGrille: Ceci {grille} n'est pas une grille")
+    if not type_coordonnees(coord):
+        raise ValueError(
+            f"marquerCouleGrille: les valeurs {coord} ne correspondent pas à des coordonnées")
+    lst = []
+    lst.append(coord)
+    while len(lst) != 0:
+        coord = lst.pop()
+        grille[coord[0]][coord[1]] = const.COULE
+        if coord[0] > 0 and grille[coord[0] - 1][coord[1]] == const.TOUCHE:
+            lst.append((coord[0] - 1, coord[1]))
+        if coord[0] < len(grille[0]) - 1 and grille[coord[0] + 1][coord[1]] == const.TOUCHE:
+            lst.append((coord[0] + 1, coord[1]))
+        if coord[1] > 0 and grille[coord[0]][coord[1] - 1] == const.TOUCHE:
+            lst.append((coord[0], coord[1] - 1))
+        if coord[1] < len(grille[0]) - 1 and grille[coord[0]][coord[1] + 1] == const.TOUCHE:
+            lst.append((coord[0], coord[1] + 1))
 

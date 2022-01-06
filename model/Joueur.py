@@ -2,7 +2,7 @@
 
 from model.Coordonnees import type_coordonnees
 from model.Bateau import *
-from model.Grille import type_grille, construireGrille
+from model.Grille import marquerCouleGrille, type_grille, construireGrille
 from model.Constantes import *
 
 #
@@ -133,7 +133,7 @@ def repondreTirJoueur(joueur: dict, coord: tuple) -> str:
         raise ValueError(f"repondreTirJoueur: {joueur} n'est pas un joueur")
     if not type_coordonnees(coord):
         raise ValueError(
-            f"setEtatSegmentBateau: les valeurs {coord} ne correspondent pas à des coordonnées")
+            f"repondreTirJoueur: les valeurs {coord} ne correspondent pas à des coordonnées")
     resTir = const.RATE
     bateau = getBateauxJoueur(joueur)
     for i in range(getNombreBateauxJoueur(joueur)):
@@ -143,8 +143,7 @@ def repondreTirJoueur(joueur: dict, coord: tuple) -> str:
             setEtatSegmentBateau(bateau[i], coord, resTir)
             getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.TOUCHE
             if estCouleBateau(bateau[i]):
-                resTir = const.COULE
-                getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.COULE
+                marquerCouleGrille(getGrilleTirsAdversaire(joueur), coord)
     if resTir == const.RATE:
         getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.RATE
     return resTir
