@@ -36,35 +36,35 @@ def type_acteur(agent: dict) -> bool:
         callable(agent[const.ACTEUR_TRAITER_RESULTAT])
 
 
-def jouerJeu(joueur1: dict, joueur2: dict) -> None:
-    if not type_joueur(joueur1):
-        raise ValueError(f"repondreTirJoueur: {joueur1} n'est pas un joueur")
-    if not type_joueur(joueur2):
-        raise ValueError(f"repondreTirJoueur: {joueur2} n'est pas un joueur")
-    placerBateauxManuel(joueur1)
-    placerBateauxManuel(joueur2)
+def jouerJeu(acteur1: dict, acteur2: dict) -> None:
+    if not type_acteur(acteur1):
+        raise ValueError(f"repondreTirJoueur: {acteur1} n'est pas un joueur")
+    if not type_acteur(acteur2):
+        raise ValueError(f"repondreTirJoueur: {acteur2} n'est pas un joueur")
+    acteur1[const.ACTEUR_PLACER_BATEAUX](acteur1[const.ACTEUR])
+    acteur2[const.ACTEUR_PLACER_BATEAUX](acteur2[const.ACTEUR])
     choix = randint(1, 2)
     if choix == 1:
-        premierJoueur = joueur1
-        adversaire = joueur2
+        premierJoueur = acteur1
+        adversaire = acteur2
     else:
-        premierJoueur = joueur2
-        adversaire = joueur1
-    while (not estPerdantJoueur(joueur1)) and not (estPerdantJoueur(joueur2)):
-        window.afficher(premierJoueur)
-        window.display_message(f"C'est au tour de {getNomJoueur(premierJoueur)}")
-        case_choisit = choisirCaseTirManuel(premierJoueur)
-        resultat_tir = repondreTirJoueur(adversaire, case_choisit)
-        traiterResultatTirManuel(premierJoueur, case_choisit, resultat_tir)
+        premierJoueur = acteur2
+        adversaire = acteur1
+    while (not estPerdantJoueur(acteur1[const.ACTEUR])) and not (estPerdantJoueur(acteur2[const.ACTEUR])):
+        window.afficher(premierJoueur[const.ACTEUR])
+        window.display_message(f"C'est au tour de {getNomJoueur(premierJoueur[const.ACTEUR])}")
+        case_choisit = premierJoueur[const.ACTEUR_CHOISIR_CASE](premierJoueur[const.ACTEUR])
+        resultat_tir = repondreTirJoueur(adversaire[const.ACTEUR], case_choisit)
+        premierJoueur[const.ACTEUR_TRAITER_RESULTAT](premierJoueur[const.ACTEUR], case_choisit, resultat_tir)
         window.refresh()
         window.display_message(f"Tir en {case_choisit} : {resultat_tir}")
         clt = premierJoueur
         premierJoueur = adversaire
         adversaire = clt
-    if estPerdantJoueur(joueur1):
-        window.display_message( f"Le gagnant est {getNomJoueur(joueur2)}" )
-    if estPerdantJoueur(joueur2):
-        window.display_message( f"Le gagnant est {getNomJoueur(joueur1)}" )
+    if estPerdantJoueur(acteur1):
+        window.display_message( f"Le gagnant est {getNomJoueur(acteur2[const.ACTEUR])}" )
+    if estPerdantJoueur(acteur2):
+        window.display_message( f"Le gagnant est {getNomJoueur(acteur1[const.ACTEUR])}" )
 
 
 def getListeBateaux() -> list:
