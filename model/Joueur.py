@@ -137,7 +137,6 @@ def repondreTirJoueur(joueur: dict, coord: tuple) -> str:
     resTir = const.RATE
     bateau = getBateauxJoueur(joueur)
     for i in range(getNombreBateauxJoueur(joueur)):
-        bateau.append(getBateauxJoueur(joueur)[i])
         if contientSegmentBateau(bateau[i], coord):
             resTir = const.TOUCHE
             setEtatSegmentBateau(bateau[i], coord, resTir)

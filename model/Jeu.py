@@ -3,8 +3,12 @@
 #
 #  Module mettant en place les joueurs
 #
-from model.Joueur import type_joueur
+from model.Bateau import placerBateau
+from model.Joueur import estPerdantJoueur, getBateauxJoueur, placerBateauJoueur, type_joueur, getNomJoueur
 from model.Constantes import *
+from random import randint
+from view import window
+from model.Manuel import choisirCaseTirManuel, repondreTirJoueur, traiterResultatTirManuel, placerBateauxManuel
 
 # Pour jouer, un joueur doit être capable de :
 # - placer ses bateaux
@@ -31,4 +35,38 @@ def type_acteur(agent: dict) -> bool:
         callable(agent[const.ACTEUR_PLACER_BATEAUX]) and callable(agent[const.ACTEUR_CHOISIR_CASE]) and \
         callable(agent[const.ACTEUR_TRAITER_RESULTAT])
 
+
+def jouerJeu(joueur1: dict, joueur2: dict) -> None:
+    if not type_joueur(joueur1):
+        raise ValueError(f"repondreTirJoueur: {joueur1} n'est pas un joueur")
+    if not type_joueur(joueur2):
+        raise ValueError(f"repondreTirJoueur: {joueur2} n'est pas un joueur")
+    placerBateauxManuel(joueur1)
+    placerBateauxManuel(joueur2)
+    choix = randint(1, 2)
+    if choix == 1:
+        premierJoueur = joueur1
+        deuxiemeJoueur = joueur2
+    else:
+        premierJoueur = joueur2
+        deuxiemeJoueur = joueur1
+    while not estPerdantJoueur(joueur1) and not estPerdantJoueur(joueur2):
+        window.afficher(premierJoueur)
+        window.display_message(f"C'est au tour de {getNomJoueur(premierJoueur)}")
+        case_choisit = choisirCaseTirManuel(premierJoueur)
+        resultat_tir = repondreTirJoueur(deuxiemeJoueur, case_choisit)
+        traiterResultatTirManuel(premierJoueur, case_choisit, resultat_tir)
+        window.refresh()
+        window.display_message(f"Tir en coordonnees_case : {case_choisit}")
+        clt = premierJoueur
+        premierJoueur = deuxiemeJoueur
+        deuxiemeJoueur = clt
+    if estPerdantJoueur(joueur1):
+        window.display_message( f"Le gagnant est {getNomJoueur(joueur1)}" )
+    if estPerdantJoueur(joueur2):
+        window.display_message( f"Le gagnant est {getNomJoueur(joueur2)}" )
+
+
+def getListeBateaux() -> list:
+    return [const.PORTE_AVION, const.CUIRASSE, const.CROISEUR, const.CROISEUR, const.TORPILLEUR]
 

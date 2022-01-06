@@ -56,10 +56,10 @@ def marquerCouleGrille(grille: list, coord: tuple) -> None:
         grille[coord[0]][coord[1]] = const.COULE
         if coord[0] > 0 and grille[coord[0] - 1][coord[1]] == const.TOUCHE:
             lst.append((coord[0] - 1, coord[1]))
-        if coord[0] < len(grille[0]) - 1 and grille[coord[0] + 1][coord[1]] == const.TOUCHE:
+        if coord[0] < const.DIM - 1 and grille[coord[0] + 1][coord[1]] == const.TOUCHE:
             lst.append((coord[0] + 1, coord[1]))
         if coord[1] > 0 and grille[coord[0]][coord[1] - 1] == const.TOUCHE:
             lst.append((coord[0], coord[1] - 1))
-        if coord[1] < len(grille[0]) - 1 and grille[coord[0]][coord[1] + 1] == const.TOUCHE:
+        if coord[1] < const.DIM - 1 and grille[coord[0]][coord[1] + 1] == const.TOUCHE:
             lst.append((coord[0], coord[1] + 1))
 

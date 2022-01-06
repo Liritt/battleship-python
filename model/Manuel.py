@@ -39,3 +39,5 @@ def traiterResultatTirManuel(joueur: dict, coord: tuple, reponse: str) -> None:
         getGrilleTirsJoueur(joueur)[coord[0]][coord[1]] = const.TOUCHE
     if repondreTirJoueur(joueur, coord) == const.COULE:
         marquerCouleGrille(getGrilleTirsJoueur(joueur), coord)
+
+
