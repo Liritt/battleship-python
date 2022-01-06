@@ -222,7 +222,6 @@ def reinitialiserBateau(bateau: dict) -> None:
         setEtatSegment(segment, const.INTACT)
 
 
-
 def contientSegmentBateau(bateau: dict, coord_cas: tuple) -> bool:
     if not type_bateau(bateau):
         raise ValueError(
@@ -249,6 +248,16 @@ def setEtatSegmentBateau(bateau: dict, coordonnees: tuple, etat: str) -> None:
         raise ValueError(f"setEtatSegmentBateau: la valeur {etat} n'est pas un état")
     setEtatSegment(getSegmentBateau(bateau, coordonnees), etat)
 
+
+def estCouleBateau(bateau: dict) -> bool:
+    if not type_bateau(bateau):
+        raise ValueError(
+            f"estCouleBateau: La valeur {bateau} n'est pas un bateau")
+    res = True
+    for segment in getSegmentsBateau(bateau):
+        if getEtatSegment(segment) == const.INTACT:
+            res = False
+    return res
 
 
 
