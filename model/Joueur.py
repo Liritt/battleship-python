@@ -149,7 +149,24 @@ def repondreTirJoueur(joueur: dict, coord: tuple) -> str:
         getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.RATE
     return resTir
 
-    
+
+def estPerdantJoueur(joueur: dict) -> bool:
+    if not type_joueur(joueur):
+        raise ValueError(f"repondreTirJoueur: {joueur} n'est pas un joueur")
+    res = True
+    liste_de_bateaux = getBateauxJoueur(joueur)
+    liste_de_segments = []
+    i = 0
+    for bateau in liste_de_bateaux:
+        liste_de_segments.append(getSegmentsBateau(bateau))
+    while i < len(liste_de_segments) and res:
+        liste_etats = []
+        for segment in liste_de_segments[i]:
+            liste_etats.append(getEtatSegment(segment))
+        if (const.INTACT or const.TOUCHE or const.RATE) in liste_etats:
+            res = False
+        i += 1
+    return res
     
 
 
