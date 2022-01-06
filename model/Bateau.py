@@ -9,7 +9,7 @@
 #
 
 from model.Coordonnees import type_coordonnees, sontVoisins
-from model.Segment import construireSegment, getCoordonneesSegment, setEtatSegment, type_segment, setCoordonneesSegment, getEtatSegment
+from model.Segment import construireSegment, getCoordonneesSegment, setEtatSegment, type_segment, setCoordonneesSegment, getEtatSegment, type_etat_segment
 from model.Constantes import *
 
 
@@ -228,7 +228,7 @@ def contientSegmentBateau(bateau: dict, coord_cas: tuple) -> bool:
         raise ValueError(
             f"contientSegmentBateau: La valeur {bateau} n'est pas un bateau")
     if not type_coordonnees(coord_cas):
-        raise ValueError(f"placerBateauJoueur: les valeurs {coord_cas} ne correspondent pas à des coordonnées")
+        raise ValueError(f"contientSegmentBateau: les valeurs {coord_cas} ne correspondent pas à des coordonnées")
     res = False
     liste_cos_segments = []
     segments = getSegmentsBateau(bateau)
@@ -239,7 +239,15 @@ def contientSegmentBateau(bateau: dict, coord_cas: tuple) -> bool:
     return res
 
 
-
+def setEtatSegmentBateau(bateau: dict, coordonnees: tuple, etat: str) -> None:
+    if not type_bateau(bateau):
+        raise ValueError(
+            f"setEtatSegmentBateau: La valeur {bateau} n'est pas un bateau")
+    if not type_coordonnees(coordonnees):
+        raise ValueError(f"setEtatSegmentBateau: les valeurs {coordonnees} ne correspondent pas à des coordonnées")
+    if not type_etat_segment(etat):
+        raise ValueError(f"setEtatSegmentBateau: la valeur {etat} n'est pas un état")
+    setEtatSegment(getSegmentBateau(bateau, coordonnees), etat)
 
 
 
