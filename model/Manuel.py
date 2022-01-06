@@ -33,11 +33,21 @@ def traiterResultatTirManuel(joueur: dict, coord: tuple, reponse: str) -> None:
     if not type_coordonnees(coord):
         raise ValueError(
             f"traiterResultatTirManuel: les valeurs {coord} ne correspondent pas à des coordonnées")
-    if repondreTirJoueur(joueur, coord) == const.RATE:
-        getGrilleTirsJoueur(joueur)[coord[0]][coord[1]] = const.RATE
-    if repondreTirJoueur(joueur, coord) == const.TOUCHE:
-        getGrilleTirsJoueur(joueur)[coord[0]][coord[1]] = const.TOUCHE
-    if repondreTirJoueur(joueur, coord) == const.COULE:
-        marquerCouleGrille(getGrilleTirsJoueur(joueur), coord)
+    grille = getGrilleTirsJoueur(joueur)
+    grille[coord[0]][coord[1]] = reponse
+    if reponse == const.COULE:
+        marquerCouleGrille(grille, coord)
 
 
+def construireActeurManuel(joueur: dict) -> dict:
+    if not type_joueur(joueur):
+        raise ValueError(
+            f"traiterResultatTirManuel: {joueur} n'est pas un joueur")  
+    acteur = {
+        const.ACTEUR: joueur,
+        const.ACTEUR_PLACER_BATEAUX: placerBateauxManuel,
+        const.ACTEUR_CHOISIR_CASE: choisirCaseTirManuel,
+        const.ACTEUR_TRAITER_RESULTAT: traiterResultatTirManuel
+    }
+    return acteur
+    

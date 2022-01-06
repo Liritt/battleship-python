@@ -46,25 +46,25 @@ def jouerJeu(joueur1: dict, joueur2: dict) -> None:
     choix = randint(1, 2)
     if choix == 1:
         premierJoueur = joueur1
-        deuxiemeJoueur = joueur2
+        adversaire = joueur2
     else:
         premierJoueur = joueur2
-        deuxiemeJoueur = joueur1
-    while not estPerdantJoueur(joueur1) and not estPerdantJoueur(joueur2):
+        adversaire = joueur1
+    while (not estPerdantJoueur(joueur1)) and not (estPerdantJoueur(joueur2)):
         window.afficher(premierJoueur)
         window.display_message(f"C'est au tour de {getNomJoueur(premierJoueur)}")
         case_choisit = choisirCaseTirManuel(premierJoueur)
-        resultat_tir = repondreTirJoueur(deuxiemeJoueur, case_choisit)
+        resultat_tir = repondreTirJoueur(adversaire, case_choisit)
         traiterResultatTirManuel(premierJoueur, case_choisit, resultat_tir)
         window.refresh()
-        window.display_message(f"Tir en coordonnees_case : {case_choisit}")
+        window.display_message(f"Tir en {case_choisit} : {resultat_tir}")
         clt = premierJoueur
-        premierJoueur = deuxiemeJoueur
-        deuxiemeJoueur = clt
+        premierJoueur = adversaire
+        adversaire = clt
     if estPerdantJoueur(joueur1):
-        window.display_message( f"Le gagnant est {getNomJoueur(joueur1)}" )
-    if estPerdantJoueur(joueur2):
         window.display_message( f"Le gagnant est {getNomJoueur(joueur2)}" )
+    if estPerdantJoueur(joueur2):
+        window.display_message( f"Le gagnant est {getNomJoueur(joueur1)}" )
 
 
 def getListeBateaux() -> list:
