@@ -143,6 +143,7 @@ def repondreTirJoueur(joueur: dict, coord: tuple) -> str:
             setEtatSegmentBateau(bateau[i], coord, resTir)
             getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.TOUCHE
             if estCouleBateau(bateau[i]):
+                resTir = const.COULE
                 marquerCouleGrille(getGrilleTirsAdversaire(joueur), coord)
     if resTir == const.RATE:
         getGrilleTirsAdversaire(joueur)[coord[0]][coord[1]] = const.RATE

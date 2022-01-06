@@ -5,7 +5,7 @@
 
 import pygame
 
-from model.Manuel import placerBateauxManuel, choisirCaseTirManuel
+from model.Manuel import placerBateauxManuel, choisirCaseTirManuel, traiterResultatTirManuel
 from model.Constantes import *
 from model.Joueur import construireJoueur, repondreTirJoueur
 from view import window
@@ -18,6 +18,7 @@ def main_test():
     case_choisit = choisirCaseTirManuel(j)
     print(case_choisit)
     resultat_tir = repondreTirJoueur(j,  case_choisit)
+    traiterResultatTirManuel(j, case_choisit, resultat_tir)
     window.refresh()
  window.set_action("Pour terminer, cliquez dans la grille de DROITE")
  window.get_clicked_cell(2)
